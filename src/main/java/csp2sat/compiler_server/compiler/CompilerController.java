@@ -28,7 +28,7 @@ public class CompilerController {
 
 
             ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("bash", "-c", "/Users/roger21gm/CLionProjects/CSP2SAT/cmake-build-debug/CSP2SAT ./model.sat ./input.json");
+            processBuilder.command("bash", "-c", "/home/roger21gm/CSP2SAT/build/CSP2SAT ./model.sat ./input.json");
 
             Process process = processBuilder.start();
             StringBuilder coutResult = new StringBuilder();
