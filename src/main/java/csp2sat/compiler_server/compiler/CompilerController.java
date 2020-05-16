@@ -4,6 +4,8 @@ package csp2sat.compiler_server.compiler;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
+import java.sql.Timestamp;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin
@@ -18,17 +20,21 @@ public class CompilerController {
     public resultReturn indexPost(@RequestBody InputData data) {
         try {
 
-            BufferedWriter input = new BufferedWriter(new FileWriter("input.json"));
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            String uniqueID = timestamp.toString();
+            uniqueID = uniqueID.replaceAll(" ", "_");
+
+            BufferedWriter input = new BufferedWriter(new FileWriter("models/input" + uniqueID + ".json"));
             input.write(data.input);
             input.close();
 
-            BufferedWriter model = new BufferedWriter(new FileWriter("model.sat"));
+            BufferedWriter model = new BufferedWriter(new FileWriter("models/model" + uniqueID + ".sat"));
             model.write(data.model);
             model.close();
 
 
             ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("bash", "-c", "/home/roger21gm/CSP2SAT/build/CSP2SAT ./model.sat ./input.json");
+            processBuilder.command("bash", "-c", "$home/CSP2SAT/build/CSP2SAT ./models/model" + uniqueID + ".sat ./models/input" + uniqueID + ".json");
 
             Process process = processBuilder.start();
             StringBuilder coutResult = new StringBuilder();
@@ -51,7 +57,7 @@ public class CompilerController {
             if (exitVal == 0) {
                 return new resultReturn(errrResult.toString(), coutResult.toString());
             } else {
-                return new resultReturn("error", "");
+                return new resultReturn(errrResult.toString(), "");
             }
 
         } catch (IOException | InterruptedException e) {
