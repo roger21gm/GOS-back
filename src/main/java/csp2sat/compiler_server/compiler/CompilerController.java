@@ -24,17 +24,17 @@ public class CompilerController {
             String uniqueID = timestamp.toString();
             uniqueID = uniqueID.replaceAll(" ", "_");
 
-            BufferedWriter input = new BufferedWriter(new FileWriter("models/input" + uniqueID + ".json"));
+            BufferedWriter input = new BufferedWriter(new FileWriter("/tmp/models/input" + uniqueID + ".json"));
             input.write(data.input);
             input.close();
 
-            BufferedWriter model = new BufferedWriter(new FileWriter("models/model" + uniqueID + ".sat"));
+            BufferedWriter model = new BufferedWriter(new FileWriter("/tmp/models/model" + uniqueID + ".sat"));
             model.write(data.model);
             model.close();
 
 
             ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("bash", "-c", "$home/CSP2SAT/build/CSP2SAT ./models/model" + uniqueID + ".sat ./models/input" + uniqueID + ".json");
+            processBuilder.command("bash", "-c", "/server/gos /tmp/models/model" + uniqueID + ".sat /tmp/models/input" + uniqueID + ".json");
 
             Process process = processBuilder.start();
             StringBuilder coutResult = new StringBuilder();
