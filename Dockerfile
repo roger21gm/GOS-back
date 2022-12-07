@@ -16,7 +16,7 @@ RUN cmake ..
 RUN make
 
 
-FROM maven:3.6.3-jdk-8
+FROM maven:3.8.6-openjdk-18
 
 COPY --from=gos /GOS/build/CSP2SAT /server/gos
 
