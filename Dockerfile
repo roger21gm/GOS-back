@@ -16,7 +16,9 @@ RUN cmake ..
 RUN make
 
 
-FROM maven:3.8.6-openjdk-18
+FROM ubuntu:20.04
+
+RUN apt update && apt install -y maven
 
 COPY --from=gos /GOS/build/CSP2SAT /server/gos
 
