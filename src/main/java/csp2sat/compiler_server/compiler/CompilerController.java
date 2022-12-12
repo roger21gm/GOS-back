@@ -32,9 +32,10 @@ public class CompilerController {
             model.write(data.model);
             model.close();
 
+            int apiEnable = data.solver == "minisat" ? 1 : 0;
 
             ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("bash", "-c", "/server/gos /tmp/models/model" + uniqueID + ".sat /tmp/models/input" + uniqueID + ".json");
+            processBuilder.command("bash", "-c", "/server/gos /tmp/models/model" + uniqueID + ".sat /tmp/models/input" + uniqueID + ".json -a=" + apiEnable + " -s=" + data.solver);
 
             Process process = processBuilder.start();
             StringBuilder coutResult = new StringBuilder();

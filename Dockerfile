@@ -13,7 +13,7 @@ RUN git submodule update --init
 RUN mkdir build
 WORKDIR /GOS/build
 RUN cmake ..
-RUN make
+RUN make -j $(nproc)
 
 
 FROM ubuntu:20.04
@@ -21,6 +21,7 @@ FROM ubuntu:20.04
 RUN apt update && apt install -y maven
 
 COPY --from=gos /GOS/build/CSP2SAT /server/gos
+COPY --from=gos /GOS/build/solvers /server/solvers
 
 COPY . /server
 
